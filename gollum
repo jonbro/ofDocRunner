@@ -1,0 +1,47 @@
+#!/usr/bin/env ruby
+
+$:.unshift File.dirname(__FILE__)
+
+help = <<HELP
+Gollum is a multi-format Wiki Engine/API/Frontend.
+
+Basic Command Line Usage:
+  gollum [OPTIONS] [PATH]
+
+        PATH                         The path to the Gollum repository (default .).
+
+Options:
+HELP
+
+require 'optparse'
+require 'rubygems'
+require 'gollum'
+
+opts = OptionParser.new()
+exec = {}
+options = { 'port' => 4567, 'bind' => '0.0.0.0' }
+wiki_options = {}
+
+# Read command line options into `options` hash
+begin
+  opts.parse!
+rescue OptionParser::InvalidOption
+  puts "gollum: #{$!.message}"
+  puts "gollum: try 'gollum --help' for more information"
+  exit
+end
+
+gollum_path = ARGV[0] || Dir.pwd
+
+require 'app'
+Precious::App.set(:gollum_path, gollum_path)
+Precious::App.set(:wiki_options, wiki_options)
+
+if cfg = options['config']
+	# If the path begins with a '/' it will be considered an absolute path,
+	# otherwise it will be relative to the CWD
+	cfg = File.join(Dir.getwd, cfg) unless cfg.slice(0) == File::SEPARATOR
+	require cfg
+end
+
+Precious::App.run!(options)

@@ -1,0 +1,20 @@
+<div id="page_{{title}}">
+	<div class="guide">
+	  <div class="main">
+		<h1>{{title}}</h1>
+		<div class="content wikistyle gollum {{format}}">
+		  {{{content}}}
+		</div>
+		{{#has_footer}}
+		<div class="footer wikistyle gollum {{footer_format}}">
+		  {{{footer_content}}}
+		</div>
+		{{/has_footer}}
+	  </div>
+	</div>
+</div>
+<div class="admin">
+  <div style="float: left;">
+    <small>Last edited by <b>{{author}}</b>, {{date}}</small>
+  </div>
+</div>
